@@ -1,0 +1,100 @@
+@import 'tailwindcss';
+@plugin 'tailwind-scrollbar';
+
+
+:root {
+   --background-color: #030e26;
+   --card-color: #041843;
+   --border-color:#37344b;
+   --primary: #f215bb;
+   --secondary: rgba(0, 0, 245, 0.958);
+   --third: rgb(123, 9, 211);
+   --fourth: rgb(57, 6, 97);
+   --foreground-color: white;
+   
+   --gradient-color-1: hsl(210, 85%, 50%);
+   --gradient-color-2: hsl(165, 85%, 50%);
+   --gradient-color-3: hsl(270, 85%, 50%);
+   --gradient-color-4: hsl(350, 85%, 50%);
+   --html: #f16529 ;
+   --css: #264ee4 ;
+   --js: #f7df1d ;
+   --ts: #007acc ;
+   --tailwind: #00b9d8 ;
+   --react: #5ed3f3 ;
+   --nextjs: #000000 ;
+}
+
+body{
+   font-family: "Inter", sans-serif;
+   
+}
+h1,h2,h3,h4,h5{
+  font-family: "Josefin Sans", sans-serif;
+}
+
+
+.neon-text {
+  color: #fff;
+  -webkit-text-stroke: 1px #f215bb; /* pink stroke */
+  text-shadow: 
+    0 0 5px #f215bb,
+    0 0 10px #f215bb,
+    0 0 20px #f215bb,
+    0 0 40px #a80b8f,
+    0 0 80px #7a0467;
+  font-weight: 700;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+}
+
+.neon-text:hover {
+  text-shadow: 
+    0 0 10px #f74ed2,
+    0 0 20px #f74ed2,
+    0 0 40px #f215bb,
+    0 0 80px #a80b8f,
+    0 0 160px #7a0467;
+}
+
+
+@theme{
+  --color-background:var(--background-color);
+  --color-card:var(--card-color);
+  --color-border: var(--border-color);
+  --color-primary:var(--primary);
+  --color-secondary:var(--secondary);
+  --color-third:var(--third);
+  --color-foreground:var(--foreground-color);
+}
+.svg-style{
+  left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%) matrix(1, 0, 0, 1, 0, 0)
+}
+.heading-text-style{
+  letter-spacing: -8px;
+  text-shadow: 0 0 10px var(--primary);
+}
+/* Basic text stroke */
+.stroked-text {
+  color: white;                   /* Fill color */
+  -webkit-text-stroke: 2px black; /* Stroke width and color */
+    
+  font-weight: bold;
+  font-size: 3rem;                /* Adjust size as needed */
+  text-transform: uppercase;      /* Optional: make it uppercase */
+}
+
+/* Optional: add soft shadow for depth */
+.stroked-text-shadow {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--primary);
+
+  text-shadow:
+    2px 2px 4px rgba(0,0,0,0.5),
+   -2px -2px 4px rgba(0,0,0,0.5),
+    2px -2px 4px rgba(0,0,0,0.5),
+   -2px 2px 4px rgba(0,0,0,0.5);
+  font-weight: bold;
+  text-transform: uppercase;
+}
+

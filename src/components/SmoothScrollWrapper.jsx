@@ -17,8 +17,8 @@ function SmoothScrollWrapper({ children, lenisRef }) {
       gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 2,
-      smoothTouch: true,
-      touchMultiplier: 2,
+      smoothTouch: false,
+      touchMultiplier: 4,
       infinite: false,
     });
 

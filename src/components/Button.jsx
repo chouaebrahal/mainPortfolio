@@ -42,7 +42,14 @@ const Button = ({className,children,type,onClick}) => {
    
   })
   return (
-    <button ref={btnRef} onClick={onClick} type={type} className={`bg-linear-to-r from-primary text-white to-third px-6 py-2 rounded-md font-bold text-sm cursor-pointer ${className ?? ''}`}>{children}</button>
+    <button
+      ref={btnRef}
+      onClick={onClick}
+      type={type}
+      className={`bg-linear-to-r from-primary text-white to-third px-6 py-2 rounded-md font-bold text-sm cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary ${className ?? ''}`}
+    >
+      {children}
+    </button>
   )
 }
 

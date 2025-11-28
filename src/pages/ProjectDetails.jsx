@@ -23,18 +23,16 @@ const ProjectDetails = () => {
     );
 
   return (
-    <div className="h-full max-w-full bg-linear-to-br from-background to-card overflow-hidden">
+    <main className="h-full max-w-full bg-linear-to-br from-background to-card overflow-hidden" aria-label={`Details for ${project.title} project`}>
       <div className="divider h-10">
-
-      
-
-       
       </div>
       <div className="w-full  h-120 lg:h-160 pt-20  border-b border-border relative">
         <img
           className="relative z-500 w-full lg:w-[80%] mx-auto h-full -mt-20 hover:scale-105 duration-300 cursor-pointer"
           src={urlFor(project.mainImage.asset._ref)}
-          alt={project.title}
+          alt={`Screenshot of ${project.title} project`}
+          width="800"
+          height="600"
         />
         <div className="icon-container absolute top-30 lg:top-60 z-1000 left-[50%] translate-x-[-50%] w-[90%] lg:w-[80%] flex justify-between px-2">
           <div className="relative group">
@@ -45,7 +43,8 @@ const ProjectDetails = () => {
               onClick={(e) => {
                 e.stopPropagation();
               }}
-              className="p-3 rounded-full block text-primary  hover:scale-1.05 animate-bounce transition-all duration-300"
+              className="p-3 rounded-full block text-primary  hover:scale-1.05 animate-bounce transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded"
+              aria-label={`Live demo of ${project.title}`}
             >
               <ExternalLink className="w-6 h-6 lg:w-7 lg:h-7" />
             </a>
@@ -61,7 +60,8 @@ const ProjectDetails = () => {
               onClick={(e) => {
                 e.stopPropagation();
               }}
-              className="p-3 rounded-full block text-primary  hover:scale-1.05 animate-bounce  transition-all duration-300"
+              className="p-3 rounded-full block text-primary  hover:scale-1.05 animate-bounce  transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded"
+              aria-label={`Source code for ${project.title} on GitHub`}
             >
               <Github className="w-6 h-6  lg:w-7 lg:h-7" />
             </a>
@@ -75,11 +75,11 @@ const ProjectDetails = () => {
         </h1>
       </div>
       <div className="container mx-auto px-5 h-full max-w-280 text-white text-justify">
-        <div className="info px-5 lg:px-10 py-10 ">
+        <div className="info px-5 lg:px-10 py-10">
           <div className="about mt-4">
-            <h1 className="text-2xl lg:text-4xl font-bold mb-5 text-justify w-full max-w-120 ">
+            <h2 className="text-2xl lg:text-4xl font-bold mb-5 text-justify w-full max-w-120">
               Description
-            </h1>
+            </h2>
             <div>
               {project.fullDescription.map((e, index) => {
                 return (
@@ -91,15 +91,16 @@ const ProjectDetails = () => {
             </div>
           </div>
           <div className="technologies mt-5">
-            <h1 className="text-2xl lg:text-4xl mb-5 font-bold">
+            <h2 className="text-2xl lg:text-4xl mb-5 font-bold">
               Technologies
-            </h1>
+            </h2>
             <div className="w-full  flex flex-wrap gap-4 my-3">
               {project.techStack.map((e, index) => {
                 return (
                   <span
                     key={index}
                     className="px-4 py-1 bg-primary flex items-center justify-center text-sm font-bold w-fit text-center rounded-md flex-nowrap shrink-0"
+                    aria-label={`Technology used: ${e}`}
                   >
                     {e}
                   </span>
@@ -108,13 +109,15 @@ const ProjectDetails = () => {
             </div>
           </div>
           <div className="mt-5">
-            <h1 className="text-2xl lg:text-4xl font-bold">Links</h1>
-            <div className="links flex gap-5 mt-5 ">
+            <h2 className="text-2xl lg:text-4xl font-bold">Links</h2>
+            <div className="links flex gap-5 mt-5">
               <div>
                 <a
                   href={project.liveUrl}
                   target="_blank"
-                  className="flex items-center gap-2 text-2xl hover:text-primary duration-300"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-2xl hover:text-primary duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded p-2"
+                  aria-label={`Visit live demo of ${project.title}`}
                 >
                   <ExternalLink className="text-primary" />
                   Live Demo
@@ -124,7 +127,9 @@ const ProjectDetails = () => {
                 <a
                   href={project.githubUrl}
                   target="_blank"
-                  className="flex items-center gap-2 text-2xl hover:text-primary duration-300"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 text-2xl hover:text-primary duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded p-2"
+                  aria-label={`View source code for ${project.title} on GitHub`}
                 >
                   <Github className="text-primary" />
                   Github Repo
@@ -134,7 +139,7 @@ const ProjectDetails = () => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

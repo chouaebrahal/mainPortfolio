@@ -23,116 +23,158 @@ const Contact = () => {
   };
 
   
-  const handleSubmit = (formData) => {
- 
- 
-  const name = formData.get('name');
-  const email = formData.get('email');
-  const message = formData.get('message');
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
+    const formData = new FormData(e.target);
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const message = formData.get('message');
 
-   const title = `New message from ${name}`;
-  const time = new Date().toLocaleString();
+    // Clear previous error messages
+    document.getElementById('name-error').textContent = '';
+    document.getElementById('email-error').textContent = '';
+    document.getElementById('message-error').textContent = '';
 
-  const templateParams = {
-    from_name: name,
-    from_email: email,
-    message: message,
-    title: title,
-    time: time
-  };
+    let errors = {};
 
- 
+    if (name.trim().length < 2) {
+      errors.name = "Name must be at least 2 characters";
+      document.getElementById('name-error').textContent = errors.name;
+    }
+    if (!email.trim().includes("@")) {
+      errors.email = "Please enter a valid email address";
+      document.getElementById('email-error').textContent = errors.email;
+    }
+    if (message.trim().length < 10) {
+      errors.message = "Message must be at least 10 characters";
+      document.getElementById('message-error').textContent = errors.message;
+    }
 
-  let errors = {};
+    if (Object.keys(errors).length > 0) {
+      // Focus on the first error field
+      const firstErrorField = Object.keys(errors)[0];
+      document.getElementById(firstErrorField)?.focus();
+      handleSend("Please correct the errors before submitting", "error");
+      return;
+    }
 
-  if (name.trim().length < 2) errors.name = "Name must be at least 2 chars";
-  if (!email.trim().includes("@")) errors.email = "Email is invalid";
-  if (message.trim().length < 10) errors.message = "Message too short";
+    const title = `New message from ${name}`;
+    const time = new Date().toLocaleString();
 
-  if (Object.keys(errors).length > 0) {
-    // Show first error in alert
-    const firstError = errors[Object.keys(errors)[0]];
-    handleSend("Message sent Failed! " + firstError,"error");
-    return;
-  }
+    const templateParams = {
+      from_name: name,
+      from_email: email,
+      message: message,
+      title: title,
+      time: time
+    };
 
-   emailjs
-    .send(
-      "service_3yfytxv",
-      "template_8ia5s58",
-      templateParams,
-      "h-5BMSJ5gzXQL13Qt"
-    )
-    .then(() => {
-      handleSend("Message sent successfully!","success");
-    })
-    .catch((err) => {
-      handleSend("Message sent Failed!","error");
-      console.log("Error:", err);
-    });
+    // Disable submit button during submission
+    const submitBtn = document.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Sending...";
 
- 
-};  
+    emailjs
+      .send(
+        "service_3yfytxv",
+        "template_8ia5s58",
+        templateParams,
+        "h-5BMSJ5gzXQL13Qt"
+      )
+      .then(() => {
+        handleSend("Message sent successfully!", "success");
+        e.target.reset(); // Reset form on success
+      })
+      .catch((err) => {
+        handleSend("Message failed to send. Please try again.", "error");
+        console.log("Error:", err);
+      })
+      .finally(() => {
+        // Re-enable submit button
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Send Message";
+      });
+};
 
   return (
-    <section id="contact" className="pb-30 relative z-10">
-      {showMsg && <Alert text={msgText} type={alerType} />}  
+    <section id="contact" className="pb-30 relative z-10" aria-labelledby="contact-heading">
+      {showMsg && <Alert text={msgText} type={alerType} />}
       <SectionsHeader
         description={
-          "Have a project, idea, or question? Send me a message and I’ll be happy to help. I’m just one click away!"
+          "Have a project, idea, or question? Send me a message and I'll be happy to help. I'm just one click away!"
         }
         title={"Get in Touch"}
+        headingLevel="h2"
       />
       <div className="container mx-auto px-5 w-full flex flex-col items-center">
-        <form action={handleSubmit} className="w-full max-w-lg space-y-5 ">
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          handleSubmit(formData);
+        }} className="w-full max-w-lg space-y-5" noValidate>
           {/* Name */}
           <div className="flex flex-col">
             <label htmlFor="name" className="text-sm font-medium mb-1">
-              Name
+              Name <span className="text-red-500" aria-label="required">*</span>
             </label>
             <input
               type="text"
               id="name"
               name="name"
               placeholder="Your name"
-              className="border border-border rounded-lg p-3 outline-none  focus:border-primary"
+              className="border border-border rounded-lg p-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary"
               required
+              aria-required="true"
+              aria-describedby="name-error"
             />
+            <div id="name-error" className="sr-only" aria-live="polite"></div>
           </div>
 
           {/* Email */}
           <div className="flex flex-col">
             <label htmlFor="email" className="text-sm font-medium mb-1">
-              Email
+              Email <span className="text-red-500" aria-label="required">*</span>
             </label>
             <input
               type="email"
               id="email"
               name="email"
               placeholder="example@mail.com"
-              className="border border-border rounded-lg p-3 outline-none  focus:border-primary"
+              className="border border-border rounded-lg p-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary"
               required
+              aria-required="true"
+              aria-describedby="email-error"
             />
+            <div id="email-error" className="sr-only" aria-live="polite"></div>
           </div>
 
           {/* Message */}
           <div className="flex flex-col">
             <label htmlFor="message" className="text-sm font-medium mb-1">
-              Message
+              Message <span className="text-red-500" aria-label="required">*</span>
             </label>
             <textarea
               id="message"
               name="message"
               placeholder="Write your message..."
               rows={5}
-              className="border border-border rounded-lg p-3 outline-none  focus:border-primary resize-none"
+              className="border border-border rounded-lg p-3 outline-none focus:border-primary focus:ring-2 focus:ring-primary resize-none"
               required
+              aria-required="true"
+              aria-describedby="message-error"
             ></textarea>
+            <div id="message-error" className="sr-only" aria-live="polite"></div>
           </div>
 
           {/* Submit Button */}
-           <Button type={'submit'} className={`w-full`} >Send Message</Button>
+           <Button
+             type={'submit'}
+             className={`w-full focus:outline-none focus:ring-2 focus:ring-primary rounded`}
+             aria-label="Send message"
+           >
+             Send Message
+           </Button>
         </form>
       </div>
     </section>

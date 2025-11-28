@@ -112,48 +112,72 @@ const sidebar = ({ isOpen, setIsOpen }) => {
   };
 
   return (
-    <div
+    <nav
       ref={sidebarRef}
       className="fixed top-[50%] text-white translate-y-[-50%] z-2000 left-10 h-80 w-15 py-10 px-5 bg-background shadow-[0_0_5px_0_var(--border-color)] rounded-lg cursor-pointer"
+      aria-label="Main navigation"
     >
       <ul className="flex flex-col justify-between items-center h-full">
         <li
           ref={menuRef}
           onClick={handleClose}
-          className="menu w-5 h-5 shrink-0 hover:text-primary hover:scale-115 transition-all duration-300"
+          className="menu w-5 h-5 shrink-0 hover:text-primary hover:scale-115 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded"
         >
-          <X />
+          <button aria-label="Close navigation menu">
+            <X />
+          </button>
         </li>
         <li
           ref={menuRef}
           onClick={toggleMenu}
-          className="menu w-5 h-5 shrink-0 hover:text-primary hover:scale-115 transition-all duration-300"
+          className="menu w-5 h-5 shrink-0 hover:text-primary hover:scale-115 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded"
         >
-          <CircleChevronRight />
+          <button aria-label={menuClicked ? "Collapse menu" : "Expand menu"}>
+            <CircleChevronRight />
+          </button>
         </li>
         {navItems.map((item, i) => {
           const Icon = item.icon;
           return (
             <li
               onClick={() => scrollTo(item.link)}
-              className=" w-full hover:text-primary hover:bg-background/60 transition-all duration-300 hover:scale-110"
+              className="w-full hover:text-primary hover:bg-background/60 transition-all duration-300 hover:scale-110"
               key={item.id}
             >
-              <Link className="p-0 m-0 flex  items-start gap-2" to={item.link}>
-                {" "}
-                <Icon className="w-5 h-5 shrink-0 hover:text-primary " />{" "}
-                <span
-                  ref={(el) => (spanRef.current[i] = el)}
-                  className="opacity-0"
+              {item.link.startsWith('#') ? (
+                <button
+                  className="p-0 m-0 flex items-start gap-2 w-full text-left focus:outline-none focus:ring-2 focus:ring-primary rounded"
+                  aria-label={`Scroll to ${item.label}`}
+                  onClick={() => scrollTo(item.link)}
                 >
-                  {item.label}
-                </span>
-              </Link>
+                  <Icon className="w-5 h-5 shrink-0 hover:text-primary" />
+                  <span
+                    ref={(el) => (spanRef.current[i] = el)}
+                    className="opacity-0"
+                  >
+                    {item.label}
+                  </span>
+                </button>
+              ) : (
+                <Link
+                  className="p-0 m-0 flex items-start gap-2 w-full text-left focus:outline-none focus:ring-2 focus:ring-primary rounded"
+                  to={item.link}
+                  aria-label={`Go to ${item.label}`}
+                >
+                  <Icon className="w-5 h-5 shrink-0 hover:text-primary" />
+                  <span
+                    ref={(el) => (spanRef.current[i] = el)}
+                    className="opacity-0"
+                  >
+                    {item.label}
+                  </span>
+                </Link>
+              )}
             </li>
           );
         })}
       </ul>
-    </div>
+    </nav>
   );
 };
 

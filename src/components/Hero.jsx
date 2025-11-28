@@ -71,7 +71,7 @@ const Hero = () => {
   );
 
   return (
-    <div ref={main} className="w-full h-screen overflow-hidden relative">
+    <section ref={main} className="w-full h-screen overflow-hidden relative" aria-labelledby="hero-heading">
       <div
         ref={infoRef}
         className="info flex flex-col items-center justify-center h-full"
@@ -81,17 +81,19 @@ const Hero = () => {
             <img
               ref={imageRef}
               src={"./chouaebrahal.png"}
-              alt={"chouaeb rahal Image"}
+              alt={`${info.name} - Front-End Developer`}
               className="w-full object-contain relative -top-10"
-              loading="lazy"
+              loading="eager"
+              width="320"
+              height="320"
             />
           </div>
         </div>
         <div className="text-info flex flex-col info items-center justify-center mt-10">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold">
+          <h1 id="hero-heading" className="text-3xl md:text-4xl lg:text-5xl font-bold text-center">
             {info.name}
           </h1>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl mt-5">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl mt-5 text-center">
             {info.job}
           </h2>
           <p className="text-lg max-w-3xl mx-auto w-full px-5 text-center flex flex-wrap mt-10 justify-center">
@@ -99,10 +101,16 @@ const Hero = () => {
           </p>
         </div>
         <div className="absolute bottom-10" ref={chevronDownRef}>
-          <ChevronDown className="w-8 h-8 animate-bounce text-primary " />
+          <button
+            onClick={() => window.lenis.scrollTo("#skills", { duration: 2, easing: (t) => t * t })}
+            className="focus:outline-none focus:ring-2 focus:ring-primary rounded p-2"
+            aria-label="Scroll to next section"
+          >
+            <ChevronDown className="w-8 h-8 animate-bounce text-primary " />
+          </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

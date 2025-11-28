@@ -107,21 +107,23 @@ const SkillsSection = () => {
     // ScrollTrigger.refresh();
   });
   return (
-    <section>
+    <section id="skills" aria-labelledby="skills-heading">
       <SectionsHeader
         title={"Skills & Technologies"}
         description={
           "A collection of the tools and technologies I work with to build fast, modern, and scalable web experiences."
         }
+        headingLevel="h2"
       />
-      <div className="container mx-auto ">
+      <div className="container mx-auto " role="list">
         {skills.map((skill, index) => {
           return (
             <div
-              key={index}
+              key={skill.name}
               className={`wrapper flex w-[80%] mx-auto ${
                 index % 2 === 0 ? "justify-start" : "justify-end"
               }`}
+              role="listitem"
             >
               <div
                 className="flex flex-col items-start w-130 bg-linear-to-br from-background to-card rounded-2xl py-10 px-5 mb-5"
@@ -130,6 +132,7 @@ const SkillsSection = () => {
                   borderWidth: "1px",
                   boxShadow: `0 0 10px ${skill.color} `,
                 }}
+                aria-labelledby={`skill-${index}-name`}
               >
                 <div
                   className={`flex gap-5  items-center justify-center w-full `}
@@ -137,20 +140,23 @@ const SkillsSection = () => {
                   <img
                     className="w-15"
                     src={skill.icon}
-                    alt={`${skill.name} image`}
+                    alt={`${skill.name} logo`}
+                    width="60"
+                    height="60"
                   />
-                  <p className="text-4xl lg:text-5xl text-white font-bold hover:text-primary italic">
+                  <h3 id={`skill-${index}-name`} className="text-4xl lg:text-5xl text-white font-bold hover:text-primary italic">
                     {skill.name}
-                  </p>
+                  </h3>
                 </div>
                 <p className="text-xl mt-10 text-center w-full">
                   {skill.description}
                 </p>
                 <div className="progress-container flex gap-5 items-center w-full mt-10">
-                  <div className="level">
+                  <div className="level" aria-label={`${skill.level}% proficiency`}>
                     <AnimatedNumber value={skill.level} />
+                    <span className="sr-only">Proficiency level: {skill.level}%</span>
                   </div>
-                  <div className="w-full h-5 bg-black/10 overflow-hidden rounded-full">
+                  <div className="w-full h-5 bg-black/10 overflow-hidden rounded-full" role="progressbar" aria-valuenow={skill.level} aria-valuemin="0" aria-valuemax="100" aria-label={`${skill.name} proficiency`}>
                     <div
                       className="inside-progress  h-full"
                       style={{ backgroundColor: `${skill.color}` }}

@@ -16,11 +16,14 @@ const Projects = () => {
   }, []);
   // console.log(projects)
   return (
-    <div id='projects'>
-        
-        <SectionsHeader title='Project Showcase' description="A visual overview of the applications and interfaces I've built using modern tools and technologies." />
+    <section id='projects' aria-labelledby="projects-heading">
+        <SectionsHeader
+          title='Project Showcase'
+          description="A visual overview of the applications and interfaces I've built using modern tools and technologies."
+          headingLevel="h2"
+        />
         <ProjectsSlider projects={projects} />
-    </div>
+    </section>
   )
 }
 

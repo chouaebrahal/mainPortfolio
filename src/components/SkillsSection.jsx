@@ -98,7 +98,7 @@ const SkillsSection = () => {
             trigger: container,
             start: "top 90%",
             end: "top 40%",
-            scrub: 1,
+            
           },
         });
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import SectionsHeader from "./SectionsHeader";
 import Button from "./Button";
 import emailjs from "@emailjs/browser";
-import Alert from "./alert";
+import Alert from "./Alert";
 const Contact = () => {
 
   const [showMsg, setShowMsg] = useState(false);

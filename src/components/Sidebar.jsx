@@ -105,10 +105,17 @@ const sidebar = ({ isOpen, setIsOpen }) => {
     setIsOpen((prev) => !prev);
   };
   const scrollTo = (link) => {
-    window.lenis.scrollTo(link, {
-      duration: 3,
-      easing: (t) => t * t,
-    });
+    if (window.lenis) {
+      window.lenis.scrollTo(link, {
+        duration: 3,
+        easing: (t) => t * t,
+      });
+    } else {
+      // Fallback for when Lenis is disabled (touch/small screens)
+      document.querySelector(link)?.scrollIntoView({
+        behavior: "smooth"
+      });
+    }
   };
 
   return (

@@ -10,7 +10,7 @@ const info = {
     "Hi, I'm a Junior Front-End Developer. I build responsive and interactive websites using React, Tailwind CSS, and modern web technologies, turning design ideas into smooth, user-friendly experiences.",
 };
 
-const Hero = () => {
+const Hero = ({ lenisRef }) => {
   const infoRef = useRef(null);
   const chevronDownRef = useRef(null);
   const main = useRef(null);
@@ -45,7 +45,7 @@ const Hero = () => {
       const infoTl = gsap.timeline({
         onComplete: () => {
           // Enable scroll when all animations complete
-          if (window.lenis) {
+          if (window.lenis && lenisRef?.current) {
             window.lenis.start();
           }
         },
@@ -102,7 +102,16 @@ const Hero = () => {
         </div>
         <div className="absolute bottom-10" ref={chevronDownRef}>
           <button
-            onClick={() => window.lenis.scrollTo("#skills", { duration: 2, easing: (t) => t * t })}
+            onClick={() => {
+              if (window.lenis) {
+                window.lenis.scrollTo("#skills", { duration: 2, easing: (t) => t * t });
+              } else {
+                // Fallback for when Lenis is disabled (touch/small screens)
+                document.querySelector("#skills")?.scrollIntoView({
+                  behavior: "smooth"
+                });
+              }
+            }}
             className="focus:outline-none focus:ring-2 focus:ring-primary rounded p-2"
             aria-label="Scroll to next section"
           >

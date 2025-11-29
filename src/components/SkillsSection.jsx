@@ -68,11 +68,11 @@ const SkillsSection = () => {
   ];
 
   useGSAP(() => {
-    const containers = gsap.utils.toArray(".wrapper");
+   
     setTimeout(() => {
+      const containers = gsap.utils.toArray(".wrapper");
       containers.forEach((container, index) => {
         const progressDiv = container.querySelector(".inside-progress");
-        const levelText = container.querySelector(".level");
         const tl = gsap.timeline();
         tl.fromTo(
           progressDiv,
@@ -98,7 +98,7 @@ const SkillsSection = () => {
             trigger: container,
             start: "top 90%",
             end: "top 40%",
-            
+            scrub:1,
           },
         });
 

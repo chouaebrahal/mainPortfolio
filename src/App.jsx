@@ -13,8 +13,13 @@ import Sidebar from './components/Sidebar';
 
 function App() {
 
- const [isOpen, setIsOpen] = useState(
-    typeof window !== 'undefined' ? window.innerWidth > 768 : true
+  // Check if device is touch-enabled and screen is small
+  const isTouchDevice = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  const isSmallScreen = typeof window !== 'undefined' ? window.innerWidth <= 768 : false;
+
+  // For touch devices or small screens, don't auto-open the sidebar
+  const [isOpen, setIsOpen] = useState(
+    typeof window !== 'undefined' && !isTouchDevice && !isSmallScreen
   );
 
 

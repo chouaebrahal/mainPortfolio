@@ -105,12 +105,19 @@ const Header = ({ isOpen, setIsOpen }) => {
             </a>
 
             <button
-              onClick={() =>
-                window.lenis.scrollTo("#contact", {
-                  duration: 3,
-                  easing: (t) => t * t,
-                })
-              }
+              onClick={() => {
+                if (window.lenis) {
+                  window.lenis.scrollTo("#contact", {
+                    duration: 3,
+                    easing: (t) => t * t,
+                  });
+                } else {
+                  // Fallback for when Lenis is disabled (touch/small screens)
+                  document.querySelector("#contact")?.scrollIntoView({
+                    behavior: "smooth"
+                  });
+                }
+              }}
               className="focus:outline-none focus:ring-2 focus:ring-primary rounded"
               aria-label="Scroll to contact section"
             >
@@ -119,12 +126,19 @@ const Header = ({ isOpen, setIsOpen }) => {
           </div>
         </nav>
         <Button
-          onClick={() =>
-            window.lenis.scrollTo("#contact", {
-              duration: 3,
-              easing: (t) => t * t,
-            })
-          }
+          onClick={() => {
+            if (window.lenis) {
+              window.lenis.scrollTo("#contact", {
+                duration: 3,
+                easing: (t) => t * t,
+              });
+            } else {
+              // Fallback for when Lenis is disabled (touch/small screens)
+              document.querySelector("#contact")?.scrollIntoView({
+                behavior: "smooth"
+              });
+            }
+          }}
           type={"button"}
           className="focus:outline-none focus:ring-2 focus:ring-primary rounded"
         >

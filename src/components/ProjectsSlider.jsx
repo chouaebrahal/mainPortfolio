@@ -15,7 +15,7 @@ const Projects = ({ projects }) => {
   const navigate = useNavigate();
 
   const [isDesktop, setIsDesktop] = useState(window.innerWidth > 1024);
-
+  const isMobile = window.innerWidth < 768 || "ontouchstart" in window; 
   useEffect(() => {
     const handleResize = () => {
       const isTouchDevice =
@@ -54,7 +54,7 @@ const Projects = ({ projects }) => {
             trigger: card,
             start: "top 80%", // Start animation when card is 80% in viewport
             end: "top 20%",
-            scrub: 1, // Reverted to scrub: 1 as per user request
+            scrub: isMobile ? false : 1, // Reverted to scrub: 1 as per user request
           },
         }
       );

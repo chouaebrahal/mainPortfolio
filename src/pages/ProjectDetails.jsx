@@ -83,7 +83,7 @@ const ProjectDetails = () => {
             <div>
               {project.fullDescription.map((e, index) => {
                 return (
-                  <p key={index} className="text-sm md:text-md lg:text-lg flex gap-2 item-center mb-2">
+                  <p key={index} className="text-md md:text-lg flex gap-2 item-center mb-2">
                     <span className="bg-primary h-3 w-3 rounded-full shrink-0 mt-1.5"></span> <span>{e.children[0].text}</span>
                   </p>
                 );

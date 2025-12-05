@@ -9,17 +9,21 @@ function SmoothScrollWrapper({ children, lenisRef }) {
   const scrollRef = useRef(null);
 
   useEffect(() => {
+    const isMobile = window.innerWidth < 768; // responsive device detect
+
     const lenis = new Lenis({
-      duration: 1.5,
+      duration: isMobile ? 1.0 : 1.5,     // smoother desktop, faster mobile
       smooth: true,
       smoothWheel: true,
-      wheelMultiplier: 1.5,
+      smoothTouch: true,                  // 🔥 important for mobile
+      touchMultiplier: isMobile ? 1.2 : 1.6,
+      wheelMultiplier: isMobile ? 1.1 : 1.5,
     });
 
     if (lenisRef) lenisRef.current = lenis;
-
     window.lenis = lenis;
 
+    // --- GSAP + Lenis integration ---
     ScrollTrigger.scrollerProxy(document.body, {
       scrollTop(value) {
         return arguments.length
@@ -40,13 +44,12 @@ function SmoothScrollWrapper({ children, lenisRef }) {
 
     lenis.on("scroll", ScrollTrigger.update);
 
-    gsap.ticker.add((t) => {
-      lenis.raf(t * 1000);
-    });
-
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
 
     const refresh = () => ScrollTrigger.refresh();
+
+    ScrollTrigger.addEventListener("refresh", () => lenis.update()); // mobile fix 🔥
     window.addEventListener("resize", refresh);
 
     scrollRef.current
@@ -54,7 +57,7 @@ function SmoothScrollWrapper({ children, lenisRef }) {
       .forEach((img) => img.addEventListener("load", refresh));
 
     requestAnimationFrame(refresh);
-    setTimeout(refresh, 400);
+    setTimeout(refresh, 350);
 
     return () => {
       lenis.destroy();

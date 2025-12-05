@@ -24,6 +24,10 @@
    --react: #5ed3f3 ;
    --nextjs: #000000 ;
 }
+html, body {
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
 
 /* Accessibility: Skip link for keyboard and screen reader users */
 .skip-link {

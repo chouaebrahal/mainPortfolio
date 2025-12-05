@@ -69,66 +69,59 @@ const SkillsSection = () => {
     },
   ];
 
-  useGSAP(() => {
-    if (!containerRef.current) return;
+useGSAP(() => {
+  if (!containerRef.current) return;
 
-    // Wait for Lenis to initialize
-    const setupAnimations = () => {
-      const wrappers = containerRef.current.querySelectorAll(".wrapper");
-      
-      wrappers.forEach((container, index) => {
-        const xValue = index % 2 === 0 ? -300 : 300;
-        const progressDiv = container.querySelector(".inside-progress");
+  const isMobile = window.innerWidth < 768 || "ontouchstart" in window; 
+  // <768px OR any touch screen
 
-        if (!progressDiv) return;
+  const setupAnimations = () => {
+    const wrappers = containerRef.current.querySelectorAll(".wrapper");
 
-        const level = progressDiv.getAttribute("data-level");
+    wrappers.forEach((container, index) => {
+      const xValue = index % 2 === 0 ? -300 : 300;
+      const progressDiv = container.querySelector(".inside-progress");
+      if (!progressDiv) return;
 
-        gsap.fromTo(
-          container,
-          { x: xValue, opacity: 0 },
-          {
-            x: 0,
-            opacity: 1,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: container,
-              start: "top 85%",
-              end: "top 50%",
-              scrub: 1,
-              
-            },
-          }
-        );
+      const level = progressDiv.getAttribute("data-level");
 
-        gsap.fromTo(
-          progressDiv,
-          { width: "0%" },
-          {
-            width: `${level}%`,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: container,
-              start: "top 85%",
-              end: "top 50%",
-              scrub: 1,
-            },
-          }
-        );
-      });
+      // 📌 Desktop => scrub: true | Mobile => scrub: false
+      const scrollConfig = {
+        trigger: container,
+        start: "top 85%",
+        end: "top 50%",
+        scrub: isMobile ? false : 1,   // 👈 switching here
+      };
 
-      ScrollTrigger.refresh();
-    };
+      gsap.fromTo(
+        container,
+        { x: xValue, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          ease: "power2.out",
+          scrollTrigger: scrollConfig,
+        }
+      );
 
-    // Wait for Lenis to be fully ready
-    if (window.lenis) {
-      // Lenis exists, wait a bit more for it to settle
-      setTimeout(setupAnimations, 500);
-    } else {
-      // Lenis not ready, wait longer
-      setTimeout(setupAnimations, 1000);
-    }
-  }, { scope: containerRef });
+      gsap.fromTo(
+        progressDiv,
+        { width: "0%" },
+        {
+          width: `${level}%`,
+          ease: "power2.out",
+          scrollTrigger: scrollConfig,
+        }
+      );
+    });
+
+    ScrollTrigger.refresh();
+  };
+
+  if (window.lenis) setTimeout(setupAnimations, 400);
+  else setTimeout(setupAnimations, 800);
+}, { scope: containerRef });
+
 
   return (
     <section id="skills" aria-labelledby="skills-heading" ref={containerRef}>

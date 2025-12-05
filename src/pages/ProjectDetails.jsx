@@ -43,7 +43,7 @@ const ProjectDetails = () => {
               onClick={(e) => {
                 e.stopPropagation();
               }}
-              className="p-3 rounded-full block text-primary  hover:scale-1.05 animate-bounce transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded"
+              className="p-3  block text-primary  hover:scale-1.05 animate-bounce transition-all duration-300  rounded"
               aria-label={`Live demo of ${project.title}`}
             >
               <ExternalLink className="w-6 h-6 lg:w-7 lg:h-7" />
@@ -60,7 +60,7 @@ const ProjectDetails = () => {
               onClick={(e) => {
                 e.stopPropagation();
               }}
-              className="p-3 rounded-full block text-primary  hover:scale-1.05 animate-bounce  transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded"
+              className="p-3  block text-primary  hover:scale-1.05 animate-bounce  transition-all duration-300  rounded"
               aria-label={`Source code for ${project.title} on GitHub`}
             >
               <Github className="w-6 h-6  lg:w-7 lg:h-7" />
@@ -83,7 +83,7 @@ const ProjectDetails = () => {
             <div>
               {project.fullDescription.map((e, index) => {
                 return (
-                  <p key={index} className="text-lg flex gap-2 item-center mb-2">
+                  <p key={index} className="text-sm md:text-md lg:text-lg flex gap-2 item-center mb-2">
                     <span className="bg-primary h-3 w-3 rounded-full shrink-0 mt-1.5"></span> <span>{e.children[0].text}</span>
                   </p>
                 );
@@ -116,7 +116,7 @@ const ProjectDetails = () => {
                   href={project.liveUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-2xl hover:text-primary duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded p-2"
+                  className="flex items-center gap-2 text-lg md:text-2xl  hover:text-primary duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded p-2"
                   aria-label={`Visit live demo of ${project.title}`}
                 >
                   <ExternalLink className="text-primary" />
@@ -128,10 +128,10 @@ const ProjectDetails = () => {
                   href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-2xl hover:text-primary duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded p-2"
+                  className="flex items-center gap-2 text-lg md:text-2xl  hover:text-primary duration-300 focus:outline-none focus:ring-2 focus:ring-primary rounded p-2"
                   aria-label={`View source code for ${project.title} on GitHub`}
                 >
-                  <Github className="text-primary" />
+                  <Github className="text-primary " />
                   Github Repo
                 </a>
               </div>

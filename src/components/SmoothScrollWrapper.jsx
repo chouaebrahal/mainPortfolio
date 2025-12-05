@@ -9,104 +9,59 @@ function SmoothScrollWrapper({ children, lenisRef }) {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    // Check if device is touch-enabled and screen is small
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    const isSmallScreen = window.innerWidth <= 768; // You can adjust this breakpoint as needed
-
-    // Only initialize Lenis on non-touch devices or large screens
-    if (isTouchDevice || isSmallScreen) {
-      // On touch devices or small screens, don't initialize Lenis
-      // Just expose a null lenis instance if needed by parent
-      if (lenisRef) {
-        lenisRef.current = null;
-      }
-      window.lenis = null;
-
-      // Still set up ScrollTrigger for basic functionality without Lenis
-      const handleResize = () => {
-        ScrollTrigger.refresh();
-      };
-
-      window.addEventListener("resize", handleResize);
-
-      const images = scrollRef.current?.querySelectorAll("img") || [];
-      const updateScroll = () => {
-        ScrollTrigger.refresh();
-      };
-
-      images.forEach((img) => {
-        if (!img.complete) {
-          img.addEventListener("load", updateScroll);
-        }
-      });
-
-      setTimeout(() => ScrollTrigger.refresh(), 100);
-
-      return () => {
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-        window.removeEventListener("resize", handleResize);
-        images.forEach((img) => {
-          img.removeEventListener("load", updateScroll);
-        });
-      };
-    }
-
-    // Initialize Lenis for non-touch and large screens
     const lenis = new Lenis({
-      duration: 2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
+      duration: 1.5,
+      smooth: true,
       smoothWheel: true,
-      wheelMultiplier: 2,
-      smoothTouch: false,
-      touchMultiplier: 4,
-      infinite: false,
+      wheelMultiplier: 1.5,
     });
 
-    // Expose lenis instance to parent
-    if (lenisRef) {
-      lenisRef.current = lenis;
-    }
-    // EXPOSE GLOBALLY 🔥🔥
+    if (lenisRef) lenisRef.current = lenis;
+
     window.lenis = lenis;
+
+    ScrollTrigger.scrollerProxy(document.body, {
+      scrollTop(value) {
+        return arguments.length
+          ? lenis.scrollTo(value, { immediate: true })
+          : lenis.scroll;
+      },
+      getBoundingClientRect() {
+        return {
+          top: 0,
+          left: 0,
+          width: window.innerWidth,
+          height: window.innerHeight,
+        };
+      },
+    });
+
+    ScrollTrigger.defaults({ scroller: document.body });
 
     lenis.on("scroll", ScrollTrigger.update);
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-
-    const handleResize = () => {
-      ScrollTrigger.refresh();
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    const images = scrollRef.current?.querySelectorAll("img") || [];
-    const updateScroll = () => {
-      ScrollTrigger.refresh();
-    };
-
-    images.forEach((img) => {
-      if (!img.complete) {
-        img.addEventListener("load", updateScroll);
-      }
+    gsap.ticker.add((t) => {
+      lenis.raf(t * 1000);
     });
 
-    setTimeout(() => ScrollTrigger.refresh(), 100);
+    gsap.ticker.lagSmoothing(0);
+
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener("resize", refresh);
+
+    scrollRef.current
+      ?.querySelectorAll("img")
+      .forEach((img) => img.addEventListener("load", refresh));
+
+    requestAnimationFrame(refresh);
+    setTimeout(refresh, 400);
 
     return () => {
       lenis.destroy();
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      window.removeEventListener("resize", handleResize);
-      images.forEach((img) => {
-        img.removeEventListener("load", updateScroll);
-      });
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+      window.removeEventListener("resize", refresh);
     };
-  }, [lenisRef]);
+  }, []);
 
   return <div ref={scrollRef}>{children}</div>;
 }

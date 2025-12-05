@@ -153,7 +153,7 @@ const sidebar = ({ isOpen, setIsOpen }) => {
             >
               {item.link.startsWith('#') ? (
                 <button
-                  className="p-0 m-0 flex items-start gap-2 w-full text-left focus:outline-none focus:ring-2 focus:ring-primary rounded"
+                  className="p-0 m-0 flex items-start gap-2 w-full text-left cursor-pointer rounded"
                   aria-label={`Scroll to ${item.label}`}
                   onClick={() => scrollTo(item.link)}
                 >

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SectionsHeader from "./SectionsHeader";
@@ -8,10 +8,12 @@ import AnimatedNumber from "./AnimatedNumber";
 gsap.registerPlugin(ScrollTrigger);
 
 const SkillsSection = () => {
+  const containerRef = useRef(null);
+
   const skills = [
     {
       name: "Html",
-      icon: "./html5.png",
+      icon: "/html5.png",
       color: "#f16529",
       description:
         "Semantic and accessible markup, clean structure, SEO-friendly page layouts, reusable components, and building responsive sections from scratch.",
@@ -19,7 +21,7 @@ const SkillsSection = () => {
     },
     {
       name: "CSS",
-      icon: "./css.png",
+      icon: "/css.png",
       color: "#264ee4",
       description:
         "Skilled in creating responsive layouts, flex and grid systems, animations, hover effects, transitions, custom components, and pixel-perfect UI designs.",
@@ -27,7 +29,7 @@ const SkillsSection = () => {
     },
     {
       name: "JavaScript",
-      icon: "./javascript.png",
+      icon: "/javascript.png",
       color: "#f7df1d",
       description:
         "DOM manipulation, API integration, event handling, modular code, and building interactive UI features",
@@ -35,7 +37,7 @@ const SkillsSection = () => {
     },
     {
       name: "React",
-      icon: "react.png",
+      icon: "/react.png",
       color: "#5ed3f3 ",
       description:
         "Reusable components, hooks, state management, controlled/uncontrolled forms, fetching data, routing, performance optimization",
@@ -43,7 +45,7 @@ const SkillsSection = () => {
     },
     {
       name: "TypeScript",
-      icon: "typescript.png",
+      icon: "/typescript.png",
       color: "#007acc",
       description:
         "Using TypeScript to write safer and more predictable front-end code. Able to define interfaces, types, and props for React components, reduce bugs, improve code readability, and make the overall project structure more maintainable and professional",
@@ -51,7 +53,7 @@ const SkillsSection = () => {
     },
     {
       name: "Next.js",
-      icon: "nextjs.png",
+      icon: "/nextjs.png",
       color: "#000000",
       description:
         "React production framework Building fast, responsive, and modern front-end interfaces using the App Router, file-based routing, dynamic UI with client components, optimized images, metadata for SEO, smooth navigation, and clean component structure.",
@@ -59,7 +61,7 @@ const SkillsSection = () => {
     },
     {
       name: "Tailwind CSS",
-      icon: "tailwind.png",
+      icon: "/tailwind.png",
       color: "#00b9d8",
       description:
         "Experienced in building fast, scalable, and consistent interfaces using utility-first classes. Able to create complex layouts, animations, and reusable design systems efficiently.",
@@ -68,46 +70,68 @@ const SkillsSection = () => {
   ];
 
   useGSAP(() => {
-   
-    setTimeout(() => {
-      const containers = gsap.utils.toArray(".wrapper");
-      containers.forEach((container, index) => {
-        const progressDiv = container.querySelector(".inside-progress");
-        const tl = gsap.timeline();
-        tl.fromTo(
-          progressDiv,
-          {
-            width: 0,
-          },
-          {
-            width: `${progressDiv.getAttribute("data-level")}%`,
+    if (!containerRef.current) return;
 
+    // Wait for Lenis to initialize
+    const setupAnimations = () => {
+      const wrappers = containerRef.current.querySelectorAll(".wrapper");
+      
+      wrappers.forEach((container, index) => {
+        const xValue = index % 2 === 0 ? -300 : 300;
+        const progressDiv = container.querySelector(".inside-progress");
+
+        if (!progressDiv) return;
+
+        const level = progressDiv.getAttribute("data-level");
+
+        gsap.fromTo(
+          container,
+          { x: xValue, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            ease: "power2.out",
             scrollTrigger: {
               trigger: container,
-              start: "top 90%",
-              end: "top 40%",
+              start: "top 85%",
+              end: "top 50%",
+              scrub: 1,
+              
+            },
+          }
+        );
+
+        gsap.fromTo(
+          progressDiv,
+          { width: "0%" },
+          {
+            width: `${level}%`,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: container,
+              start: "top 85%",
+              end: "top 50%",
               scrub: 1,
             },
           }
         );
-        tl.from(container, {
-          opacity: 0,
-          scale: 0.7,
-          x: index % 2 === 0 ? "-200px" : "200px",
-          scrollTrigger: {
-            trigger: container,
-            start: "top 90%",
-            end: "top 40%",
-            scrub:1,
-          },
-        });
-
       });
-    }, 300);
-    // ScrollTrigger.refresh();
-  });
+
+      ScrollTrigger.refresh();
+    };
+
+    // Wait for Lenis to be fully ready
+    if (window.lenis) {
+      // Lenis exists, wait a bit more for it to settle
+      setTimeout(setupAnimations, 500);
+    } else {
+      // Lenis not ready, wait longer
+      setTimeout(setupAnimations, 1000);
+    }
+  }, { scope: containerRef });
+
   return (
-    <section id="skills" aria-labelledby="skills-heading">
+    <section id="skills" aria-labelledby="skills-heading" ref={containerRef}>
       <SectionsHeader
         title={"Skills & Technologies"}
         description={
@@ -115,12 +139,12 @@ const SkillsSection = () => {
         }
         headingLevel="h2"
       />
-      <div className="container mx-auto " role="list">
+      <div className="container mx-auto" role="list">
         {skills.map((skill, index) => {
           return (
             <div
               key={skill.name}
-              className={`wrapper flex w-[80%] mx-auto ${
+              className={`wrapper flex mb-10 w-[80%] mx-auto ${
                 index % 2 === 0 ? "justify-start" : "justify-end"
               }`}
               role="listitem"
@@ -130,13 +154,11 @@ const SkillsSection = () => {
                 style={{
                   borderColor: skill.color,
                   borderWidth: "1px",
-                  boxShadow: `0 0 10px ${skill.color} `,
+                  boxShadow: `0 0 10px ${skill.color}`,
                 }}
                 aria-labelledby={`skill-${index}-name`}
               >
-                <div
-                  className={`flex gap-5  items-center justify-center w-full `}
-                >
+                <div className="flex gap-5 items-center justify-center w-full">
                   <img
                     className="w-15"
                     src={skill.icon}
@@ -144,7 +166,10 @@ const SkillsSection = () => {
                     width="60"
                     height="60"
                   />
-                  <h3 id={`skill-${index}-name`} className="text-4xl lg:text-5xl text-white font-bold hover:text-primary italic">
+                  <h3
+                    id={`skill-${index}-name`}
+                    className="text-4xl lg:text-5xl text-white font-bold hover:text-primary italic"
+                  >
                     {skill.name}
                   </h3>
                 </div>
@@ -152,14 +177,26 @@ const SkillsSection = () => {
                   {skill.description}
                 </p>
                 <div className="progress-container flex gap-5 items-center w-full mt-10">
-                  <div className="level" aria-label={`${skill.level}% proficiency`}>
+                  <div
+                    className="level"
+                    aria-label={`${skill.level}% proficiency`}
+                  >
                     <AnimatedNumber value={skill.level} />
-                    <span className="sr-only">Proficiency level: {skill.level}%</span>
+                    <span className="sr-only">
+                      Proficiency level: {skill.level}%
+                    </span>
                   </div>
-                  <div className="w-full h-5 bg-black/10 overflow-hidden rounded-full" role="progressbar" aria-valuenow={skill.level} aria-valuemin="0" aria-valuemax="100" aria-label={`${skill.name} proficiency`}>
+                  <div
+                    className="w-full h-5 bg-black/10 overflow-hidden rounded-full"
+                    role="progressbar"
+                    aria-valuenow={skill.level}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-label={`${skill.name} proficiency`}
+                  >
                     <div
-                      className="inside-progress  h-full"
-                      style={{ backgroundColor: `${skill.color}` }}
+                      className="inside-progress h-full"
+                      style={{ backgroundColor: skill.color }}
                       data-level={skill.level}
                     ></div>
                   </div>

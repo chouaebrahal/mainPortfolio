@@ -36,7 +36,7 @@ const Header = ({ isOpen, setIsOpen }) => {
             {isOpen ? (
               <button
                 onClick={() => setIsOpen((prev) => !prev)}
-                className="w-5 h-5 hover:text-third duration-300 transition-all hover:scale-[1.06] focus:outline-none focus:ring-2 focus:ring-primary rounded"
+                className="w-5 h-5 hover:text-third duration-300 transition-all hover:scale-[1.06]  rounded cursor-pointer"
                 aria-label="Close navigation menu"
               >
                 <X />
@@ -44,20 +44,20 @@ const Header = ({ isOpen, setIsOpen }) => {
             ) : (
               <button
                 onClick={() => setIsOpen((prev) => !prev)}
-                className="w-5 h-5 hover:text-third duration-300 transition-all hover:scale-[1.06] focus:outline-none focus:ring-2 focus:ring-primary rounded"
+                className="w-5 h-5 hover:text-third duration-300 transition-all hover:scale-[1.06]  rounded cursor-pointer"
                 aria-label="Open navigation menu"
               >
                 <Menu />
               </button>
             )}
-            <Link to={`/`} className="focus:outline-none focus:ring-2 focus:ring-primary rounded" aria-label="Go to home page">
-              <House className="w-5 h-5 hover:text-third duration-300 transition-all hover:scale-[1.06]" />{" "}
+            <Link to={`/`} className=" rounded" aria-label="Go to home page">
+              <House className="w-5 h-5 hover:text-third duration-300 transition-all hover:scale-[1.06] cursor-pointer" />{" "}
             </Link>
             <a
               href="https://www.linkedin.com/in/chouaeb-rahal/"
               target="_blank"
               rel="noopener noreferrer"
-              className="focus:outline-none focus:ring-2 focus:ring-primary rounded"
+              className="cursor-pointer rounded"
               aria-label="Visit Chouaeb Rahal's LinkedIn profile"
             >
               <svg
@@ -83,7 +83,7 @@ const Header = ({ isOpen, setIsOpen }) => {
               href="https://github.com/chouaebrahal/"
               target="_blank"
               rel="noopener noreferrer"
-              className="focus:outline-none focus:ring-2 focus:ring-primary rounded"
+              className="cursor-pointer rounded"
               aria-label="Visit Chouaeb Rahal's GitHub profile"
             >
               <svg
@@ -118,7 +118,7 @@ const Header = ({ isOpen, setIsOpen }) => {
                   });
                 }
               }}
-              className="focus:outline-none focus:ring-2 focus:ring-primary rounded"
+              className="cursor-pointer rounded"
               aria-label="Scroll to contact section"
             >
               <Mail className="w-5 h-5 hover:text-third duration-300 transition-all hover:scale-[1.06]" />
@@ -140,7 +140,7 @@ const Header = ({ isOpen, setIsOpen }) => {
             }
           }}
           type={"button"}
-          className="focus:outline-none focus:ring-2 focus:ring-primary rounded"
+          className="cursor-pointer rounded"
         >
           Contact Me
         </Button>

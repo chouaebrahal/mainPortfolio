@@ -17,7 +17,7 @@ const Home = ({lenisRef}) => {
       
       
         
-      <Hero lenisRef={lenisRef} />
+      <Hero  />
      
       
       <SkillsSection />

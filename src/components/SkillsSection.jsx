@@ -81,7 +81,7 @@ useGSAP(() => {
     wrappers.forEach((container, index) => {
       const xValue = index % 2 === 0 ? -300 : 300;
       const progressDiv = container.querySelector(".inside-progress");
-      if (!progressDiv) return;
+      // if (!progressDiv) return;
 
       const level = progressDiv.getAttribute("data-level");
 
